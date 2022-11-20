@@ -1,8 +1,9 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
+import useToken from "../../hooks/useToken";
 
 const SignUp = () => {
   const {
@@ -10,10 +11,18 @@ const SignUp = () => {
     formState: { errors },
     handleSubmit,
   } = useForm();
-  const { createUser, updateUserProfile, googleSignIn } = useContext(AuthContext);
+  const { createUser, updateUserProfile, googleSignIn } =
+    useContext(AuthContext);
+
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
+
+  const[createdUserEmail, setCreatedUserEmail] = useState('');
+  const [token] = useToken(createdUserEmail);
+  if(token){
+    navigate('/')
+  }
 
   const handelGoogleSignIn = () => {
     googleSignIn()
@@ -34,19 +43,36 @@ const SignUp = () => {
       .then((res) => {
         const user = res.user;
         console.log(user);
-        toast.success("Registered Successfully!.");
+        toast.success("User Created Successfully !");
         const userInfo = {
           displayName: data.name,
         };
         updateUserProfile(userInfo)
-          .then(() => {})
+          .then(() => {
+            savedUser(data.name, data.email)
+          })
           .catch((e) => console.log(e));
-        navigate("/login");
       })
       .catch((e) => {
         toast.error(e.message);
       });
   };
+
+  const savedUser = (name, email)=>{
+    const user = {name, email};
+    fetch('http://localhost:5000/users',{
+      method: 'POST',
+      headers:{
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify(user)
+    })
+    .then(res => res.json())
+    .then(data => {
+      setCreatedUserEmail(email);
+    })
+  }
+
   return (
     <div className="h-[80vh] flex items-center justify-center">
       <div className="w-96 shadow p-8 rounded">
@@ -108,9 +134,6 @@ const SignUp = () => {
             {errors.password && (
               <p className="text-red-500 mt-3">{errors.password?.message}</p>
             )}
-            <label className="label">
-              <span className="label-text">Forgot Password?</span>
-            </label>
           </div>
           <input
             type="submit"
@@ -125,7 +148,10 @@ const SignUp = () => {
           </Link>
         </p>
         <div className="divider my-8">OR</div>
-        <button onClick={handelGoogleSignIn} className="btn btn-outline btn-success w-full">
+        <button
+          onClick={handelGoogleSignIn}
+          className="btn btn-outline btn-success w-full"
+        >
           Continue with Google
         </button>
       </div>

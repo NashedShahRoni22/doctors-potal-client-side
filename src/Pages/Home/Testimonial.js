@@ -37,7 +37,7 @@ const Testimonial = () => {
                     <h2 className='text-3xl'>What Our Patients Says</h2>
                 </div>
                 <div>
-                    <img src={queto} alt="" srcset="" className='md:w-[192px] md:h-[156px] w-[98px] h-[70px] ' />
+                    <img src={queto} alt="" className='md:w-[192px] md:h-[156px] w-[98px] h-[70px] ' />
                 </div>
                 
             </div>

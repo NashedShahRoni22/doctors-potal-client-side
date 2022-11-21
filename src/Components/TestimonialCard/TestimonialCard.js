@@ -11,7 +11,7 @@ const TestimonialCard = ({td}) => {
         </div>
         <div className=" flex gap-8 items-center ">
             <div>
-                <img className="w-[64px] rounded-full ring ring-primary ring-offset-base-100 ring-offset-2" src={image} alt="" srcset="" />
+                <img className="w-[64px] rounded-full ring ring-primary ring-offset-base-100 ring-offset-2" src={image} alt="" />
             </div>
             <div>
                 <h2>{name}</h2>

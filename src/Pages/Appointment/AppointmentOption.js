@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
 
 const AppointmentOption = ({ ao, setTreatmentModal }) => {
-  const { name, slots } = ao;
+  const { name, slots, price } = ao;
   const { user } = useContext(AuthContext);
   return (
     <div>
@@ -14,6 +14,7 @@ const AppointmentOption = ({ ao, setTreatmentModal }) => {
           <p>
             {slots.length} {slots.length > 1 ? "spaces" : "space"} Avialable
           </p>
+          <p>Service Charge: {price} BDT</p>
           <div className="card-actions justify-center mt-3">
             {user?.uid ? 
               <label
@@ -27,8 +28,6 @@ const AppointmentOption = ({ ao, setTreatmentModal }) => {
               :
               <Link
               to='/login'
-              className="btn bg-gradient-to-r from-primary to-secondary 
-              border-0 text-white"
               >
                 Please Login
               </Link>

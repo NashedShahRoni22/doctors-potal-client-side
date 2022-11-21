@@ -10,7 +10,7 @@ const ApppointmentModal = ({
   selectedDate,
   refetch
 }) => {
-  const { name, slots } = treatmentModal;
+  const { name, slots, price } = treatmentModal;
   const date = format(selectedDate, "PP");
   const { user } = useContext(AuthContext);
 
@@ -30,6 +30,7 @@ const ApppointmentModal = ({
       patientName,
       email,
       phoneNumber,
+      price,
     };
     fetch("http://localhost:5000/bookings", {
       method: "POST",

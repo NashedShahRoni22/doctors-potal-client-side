@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useContext } from "react";
+import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
 import Loading from "../../Shared/Loading/Loading";
 
@@ -18,7 +19,7 @@ const Dashboard = () => {
   });
 
   if (isLoading) return <Loading></Loading>;
-  
+
   return (
     <div className="overflow-x-auto mx-10">
       <h1 className="text-3xl mb-10">My Appointments</h1>
@@ -30,6 +31,7 @@ const Dashboard = () => {
             <th>Treatment</th>
             <th>Date</th>
             <th>Time</th>
+            <th>Price</th>
           </tr>
         </thead>
         <tbody>
@@ -40,6 +42,12 @@ const Dashboard = () => {
               <td>{booking.treatmentName}</td>
               <td>{booking.appointmentDate}</td>
               <td>{booking.slot}</td>
+              <td>
+                {booking.price && !booking.paid && (
+                  <Link to={`/dashboard/payment/${booking._id}`} className="btn btn-primary btn-xs">Payment</Link>
+                )}
+                {booking.price && booking.paid && <span className="text-green-500">Paid</span>}
+              </td>
             </tr>
           ))}
         </tbody>
